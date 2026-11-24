@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class=""><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تقرير الشئون القانونية</title>
+<style>
+:root{--bg:#F3F5F9;--card:#FFFFFF;--card2:#F5F7FB;--line:#DCE2EC;--line2:#E9EEF5;--tx:#14213D;--mut:#6B7280;
+ --blue:#1F4E8C;--teal:#1F7A8C;--gold:#B8860B;--green:#2E8B6E;--red:#C0392B;--orange:#D2691E;--purple:#6D4C9F;--pink:#B83B7E;--grey:#94A3B8;
+ --hdr:linear-gradient(110deg,#14213D 0%,#1F2F57 65%,#2A3F6E 100%);--hdrline:#B8860B;--shadow:0 1px 2px rgba(20,33,61,.05),0 6px 16px -10px rgba(20,33,61,.18);--tipbg:#fff}
+html.dark{--bg:#0b1220;--card:#111a2e;--card2:#16213a;--line:#24314f;--line2:#1c2944;--tx:#e6edf7;--mut:#93a3bf;
+ --blue:#60a5fa;--teal:#2dd4bf;--gold:#fbbf24;--green:#34d399;--red:#f87171;--orange:#fb923c;--purple:#a78bfa;--pink:#f472b6;--grey:#64748b;
+ --hdr:linear-gradient(120deg,#0f766e,#1e3a8a 60%,#4c1d95);--hdrline:transparent;--shadow:0 8px 22px -12px #000c;--tipbg:#0b1220}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Segoe UI",Tahoma,"Noto Sans Arabic",Arial,sans-serif;font-size:14px}
+html.dark body{background:radial-gradient(1200px 600px at 85% -10%,#15305a66,transparent),var(--bg);background-attachment:fixed}
+.wrap{max-width:1480px;margin:0 auto;padding:18px}
+header{background:var(--hdr);border-radius:16px;padding:18px 24px;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:3px solid var(--hdrline);box-shadow:0 10px 28px -14px rgba(20,33,61,.55)}
+html.dark header{box-shadow:0 0 34px #2dd4bf2a}
+header h1{margin:0;font-size:25px}
+header .sub{margin-top:6px;font-size:12.8px;color:#E8D9A8}
+html.dark header .sub{color:#d6e4ff}
+header .badges{display:flex;gap:8px;flex-wrap:wrap}
+header .bd{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);padding:7px 13px;border-radius:12px;font-size:13px}
+header .bd b{font-size:15px}
+/* التبويبات */
+.tabs{display:flex;gap:8px;margin:14px 0 0;padding:0 4px;border-bottom:3px solid var(--tx)}
+html.dark .tabs{border-bottom-color:#2dd4bf55}
+.tab{flex:1;display:flex;align-items:center;justify-content:center;gap:9px;padding:11px 14px;border:1px solid var(--line);border-bottom:0;border-radius:12px 12px 0 0;background:var(--card);color:var(--tx);font:inherit;font-size:15.5px;font-weight:700;cursor:pointer;transition:.2s;box-shadow:inset 0 -4px 0 -1px color-mix(in srgb,var(--c) 35%,transparent)}
+.tab span.ic{font-size:18px}
+.tab:hover{background:color-mix(in srgb,var(--c) 10%,var(--card));color:var(--c);transform:translateY(-2px)}
+.tab.on{background:var(--c);color:#fff;border-color:var(--c);border-top:4px solid #B8860B;box-shadow:0 -6px 16px -6px color-mix(in srgb,var(--c) 70%,transparent)}
+html.dark .tab.on{color:#0b1220;border-top-color:#fff}
+.page{display:none;animation:pin .35s ease-out}
+.page.on{display:block}
+@keyframes pin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 14px;box-shadow:var(--shadow)}
+.filters label{color:var(--mut);font-size:13px}
+.chip{border:1px solid var(--line);background:var(--card2);color:var(--tx);padding:6px 13px;border-radius:999px;cursor:pointer;font:inherit;font-size:13px;display:inline-flex;align-items:center;gap:7px;transition:.15s}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--c,var(--grey));display:inline-block}
+.chip:hover{border-color:var(--c,var(--tx))}
+.chip.on{background:var(--c,var(--tx));border-color:var(--c,var(--tx));color:#fff}
+html.dark .chip.on{color:#0b1220}
+.chip.on i{background:#fff}
+.sep{width:1px;height:26px;background:var(--line);margin:0 2px}
+select,input[type=search]{background:var(--card2);color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:7px 10px;font:inherit;font-size:13.5px}
+select.on{border-color:var(--gold);box-shadow:0 0 0 2px color-mix(in srgb,var(--gold) 25%,transparent)}
+.reset{margin-inline-start:auto;border:1px solid var(--red);color:var(--red);background:transparent;border-radius:999px;padding:5px 13px;font:inherit;font-size:12.5px;cursor:pointer;visibility:hidden}
+.reset.show{visibility:visible}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpis.k6{grid-template-columns:repeat(6,1fr)}
+.kpis.k5{grid-template-columns:repeat(5,1fr)}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 14px 11px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.kpi:before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--c)}
+.kpi:after{content:"";position:absolute;width:110px;height:110px;border-radius:50%;background:var(--c);opacity:.07;left:-30px;bottom:-50px}
+.kpi .t{color:var(--mut);font-size:12.8px}
+.kpi .v{font-size:24px;font-weight:700;margin:6px 0 4px;color:var(--c);font-variant-numeric:tabular-nums;white-space:nowrap}
+.kpi .v small{font-size:13px;font-weight:600;color:var(--mut);margin-inline-start:4px}
+.kpi .d{font-size:11.8px;color:var(--mut);line-height:1.5;min-height:18px}
+.kpi .d b{color:var(--tx)}
+.gauges{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}
+.gc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px 10px;position:relative;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center}
+.gc .gt{font-size:14.5px;font-weight:700;text-align:center;line-height:1.3}
+.gc .gt small{display:block;color:var(--mut);font-weight:400;font-size:11.5px;margin-top:2px}
+.gc svg{width:100%;max-width:230px;display:block;margin-top:6px;direction:ltr}
+.gc .ft{align-self:stretch;text-align:center;font-size:12px;color:var(--mut);border-top:1px dashed var(--line);padding-top:7px;margin-top:2px}
+.gc .ft b{color:var(--tx)}
+.gc .tag{position:absolute;top:10px;left:12px;font-size:10.5px;color:var(--mut);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:1px 8px}
+.grid{display:grid;gap:14px;margin-top:14px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g21{grid-template-columns:1.4fr 1fr}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;min-width:0;box-shadow:var(--shadow)}
+.card h2{margin:0 0 3px;font-size:16px;display:flex;align-items:center;gap:8px}
+.card h2 i{width:10px;height:10px;border-radius:3px;background:var(--c,var(--teal));display:inline-block}
+.card .hint{color:var(--mut);font-size:12px;margin-bottom:10px;line-height:1.6}
+/* أشرطة أفقية */
+.hb{display:flex;flex-direction:column;gap:7px}
+.hr{display:grid;grid-template-columns:minmax(90px,150px) 1fr auto;gap:10px;align-items:center;padding:4px 6px;border-radius:9px;cursor:default;transition:background .15s,opacity .2s}
+.hr.ck{cursor:pointer}
+.hr.ck:hover{background:var(--card2)}
+.hr.sel{background:color-mix(in srgb,var(--gold) 13%,var(--card));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gold) 50%,transparent)}
+.hr.dim{opacity:.4}
+.hr .nm{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hr .nm small{display:block;color:var(--mut);font-weight:400;font-size:11px}
+.hr .tr{height:16px;background:var(--line2);border-radius:6px;overflow:hidden;display:flex}
+.hr .tr div{height:100%;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.hr .tr div+div{border-right:2px solid var(--card)}
+.hr .vv{font-weight:700;font-variant-numeric:tabular-nums;font-size:13px;text-align:left;min-width:62px}
+.hr .vv small{color:var(--mut);font-weight:400;font-size:11px;margin-inline-start:7px}
+.mtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.mtabs .chip{padding:4px 11px;font-size:12px}
+/* مقارنة حركة/سكون */
+.vs{display:flex;flex-direction:column;gap:14px}
+.vs .row .lb{display:flex;justify-content:space-between;font-size:12.8px;color:var(--mut);margin-bottom:6px}
+.vs .row .lb b{color:var(--tx)}
+.vs .bar{display:flex;height:30px;border-radius:9px;overflow:hidden;background:var(--line2)}
+.vs .bar div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;transition:width .5s}
+html.dark .vs .bar div{color:#0b1220}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--mut);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend span:before{content:"";width:11px;height:11px;border-radius:3px;background:var(--c)}
+.note{margin-top:12px;background:var(--card2);border:1px solid var(--line);border-right:4px solid var(--c);border-radius:10px;padding:9px 12px;font-size:12.8px;line-height:1.7}
+.note b{color:var(--c)}
+.sh{margin:14px 0 8px;font-size:13.5px;color:var(--mut);font-weight:600}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mini div{background:var(--card2);border:1px solid var(--line);border-bottom:3px solid var(--c);border-radius:12px;padding:10px;text-align:center}
+.mini b{display:block;font-size:21px;color:var(--c);font-variant-numeric:tabular-nums}
+.mini span{font-size:11.8px;color:var(--mut)}
+.tbl-wrap{max-height:540px;overflow:auto;border:1px solid var(--line);border-radius:12px;margin-top:8px}
+table{width:100%;border-collapse:collapse;font-size:12.8px}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line2);text-align:right;white-space:nowrap}
+th{position:sticky;top:0;background:var(--tx);color:var(--card);font-weight:600;cursor:pointer;z-index:2;user-select:none}
+html.dark th{background:#16213a;color:#5eead4}
+td.n,th.n{text-align:center;font-variant-numeric:tabular-nums}
+tbody tr:hover td{background:color-mix(in srgb,var(--blue) 8%,var(--card))}
+tfoot td{position:sticky;bottom:0;background:var(--card2);border-top:2px solid var(--line);font-weight:700}
+.bdg{display:inline-block;padding:2px 10px;border-radius:999px;font-size:11.5px;font-weight:700;border:1px solid var(--c);color:var(--c);background:color-mix(in srgb,var(--c) 10%,transparent)}
+.tbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.tip{position:fixed;pointer-events:none;background:var(--tipbg);color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px 11px;font-size:12.3px;z-index:20;display:none;box-shadow:0 10px 26px rgba(20,33,61,.22);line-height:1.7;max-width:320px}
+html.dark .tip{border-color:#2dd4bf66;box-shadow:0 10px 30px #000a}
+footer{color:var(--mut);text-align:center;font-size:12px;margin:20px 0 4px}
+@media(max-width:1250px){.kpis,.kpis.k6,.kpis.k5{grid-template-columns:repeat(3,1fr)}.gauges{grid-template-columns:repeat(2,1fr)}.g2,.g3,.g21{grid-template-columns:1fr}}
+@media(max-width:700px){.kpis,.kpis.k6,.kpis.k5{grid-template-columns:repeat(2,1fr)}.tab{font-size:13px;padding:9px 6px}}
+.nbtn{font:inherit;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid color-mix(in srgb,var(--orange) 45%,transparent);background:color-mix(in srgb,var(--orange) 10%,transparent);color:var(--tx);cursor:pointer;margin-inline-start:auto;margin-inline-end:8px;transition:.2s}
+.nbtn:hover{background:color-mix(in srgb,var(--orange) 20%,transparent)}
+.nbtn b{display:inline-block;min-width:20px;padding:0 6px;border-radius:999px;background:var(--orange);color:#fff;font-size:11px}
+.nbtn.on{background:var(--orange);color:#fff}.nbtn.on b{background:#fff;color:var(--orange)}
+.ntd{white-space:normal!important;min-width:210px;max-width:330px}
+.nt{display:inline-block;padding:4px 8px;border-radius:8px;font-size:12.5px;line-height:1.55;color:var(--tx);background:color-mix(in srgb,var(--orange) 12%,transparent);border-inline-start:3px solid var(--orange)}
+.g12{grid-template-columns:1fr 2fr}
+.stk{display:flex;flex-direction:column;gap:14px}.stk>.card{flex:1}
+@media(max-width:1250px){.g12{grid-template-columns:1fr}}
+.fillc{display:flex;flex-direction:column}.fillc .mini{flex:1;grid-auto-rows:1fr}
+.fillc .mini div{display:flex;flex-direction:column;justify-content:center;gap:6px}.fillc .mini b{font-size:26px}.fillc .mini span{font-size:13px}
+.g3w{grid-template-columns:.85fr 1.45fr 1.25fr}
+@media(max-width:1250px){.g3w{grid-template-columns:1fr}}
+.wfh{display:flex;flex-direction:column;gap:5px}
+.wr{display:grid;grid-template-columns:minmax(80px,135px) 1fr 82px;gap:8px;align-items:center;padding:2px 4px;border-radius:7px}
+.wr:hover{background:var(--card2)}
+.wr .nm{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wr.tt .nm{font-weight:800}
+.wr .tr{position:relative;height:15px;background:repeating-linear-gradient(90deg,var(--line2) 0 1px,transparent 1px 10%)}
+.wr .tr div{position:absolute;top:0;bottom:0;border-radius:4px;transition:right .5s cubic-bezier(.2,.8,.2,1),width .5s cubic-bezier(.2,.8,.2,1)}
+.wr .vv{font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.wr .vv small{color:var(--mut);font-weight:500;font-size:11px;margin-inline-start:5px}
+
+#p-sm>.kpis{margin-top:14px}
+.kpi .v small{font-size:13px;font-weight:600;color:var(--mut);margin-inline-start:4px}
+.lnote{margin-top:14px;background:color-mix(in srgb,var(--gold) 12%,var(--card));border:1px solid color-mix(in srgb,var(--gold) 45%,transparent);border-right:4px solid var(--gold);border-radius:12px;padding:10px 14px;font-size:13.5px;line-height:1.8}
+.snote{background:var(--card2);border:1px solid var(--line);border-right:4px solid var(--gold);border-radius:12px;padding:10px 14px;font-size:13.5px;line-height:1.8;margin-bottom:10px}
+.snote.o{border-right-color:var(--orange)}
+.snote .w{color:var(--mut);font-size:12.5px;margin-bottom:2px}.snote .w b{color:var(--tx)}
+#sAg .hr .nm small,#sFo .hr .nm small{max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.hb.cmp{gap:3px}.hb.cmp .hr{padding:3px 6px;grid-template-columns:minmax(110px,190px) 1fr auto}
+.hb.cmp .hr .nm small{display:none}.hb.cmp .hr .tr{height:12px}.hb.cmp .hr .vv{font-size:12.5px}
+/* ===== حركة الكروت الموحدة ===== */
+.kpi{transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease!important;will-change:transform}
+.kpi:hover{transform:translateY(-6px)!important;border-color:var(--c)!important;box-shadow:0 12px 26px -8px rgba(20,33,61,.28),0 0 18px color-mix(in srgb,var(--c) 40%,transparent)!important;z-index:2}
+.snote{transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease!important;will-change:transform}
+.snote:hover{transform:translateY(-6px)!important;border-color:var(--gold)!important;box-shadow:0 12px 26px -8px rgba(20,33,61,.28),0 0 18px color-mix(in srgb,var(--gold) 40%,transparent)!important;z-index:2}
+.kpi:after{transition:opacity .25s ease,transform .35s ease}
+.kpi:hover:after{opacity:.16!important;transform:scale(1.15)}
+@media (prefers-reduced-motion:reduce){.kpi,.gcard,.gauge,.mini>div{transition:none!important}.kpi:hover,.gcard:hover,.gauge:hover,.mini>div:hover{transform:none!important}}
+.hsel{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:8px 12px}
+.hsel label{font-size:12.5px;color:#E8D9A8}
+.hsel select{background:#fff;color:#14213D;border:1px solid #B8860B;font-weight:700;min-width:130px}
+.kpi .dl{margin-top:6px;font-size:11.8px;font-weight:700;color:var(--c);display:inline-block;padding:2px 8px;border-radius:999px;background:color-mix(in srgb,var(--c) 11%,transparent)}
+.cmpT td.up{color:var(--red);font-weight:700}.cmpT td.dn{color:var(--green);font-weight:700}.cmpT td.nu{color:var(--blue);font-weight:700}
+.nw{font-size:10.5px;padding:1px 7px;margin-inline-start:6px}
+.mvsum{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 8px}
+.mvsum .bdg{font-size:12.5px;padding:4px 12px}
+.tsum{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;padding:6px 0}
+.tsum span{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:999px;font-size:14px;font-weight:700;border:1.5px solid var(--c);color:var(--c);background:color-mix(in srgb,var(--c) 10%,var(--card))}
+.tsum span b{font-size:16.5px;font-variant-numeric:tabular-nums}
+tfoot td.tsc{text-align:center;background:color-mix(in srgb,var(--gold) 8%,var(--card2));border-top:2px solid var(--gold)}
+.kpi.clk{cursor:pointer}
+.kpi.clk .t:after{content:"اضغط للتفاصيل";font-size:10px;color:var(--mut);opacity:0;margin-inline-start:6px;transition:opacity .2s}
+.kpi.clk:hover .t:after{opacity:1}
+.mdl{position:fixed;inset:0;background:rgba(11,18,32,.55);backdrop-filter:blur(2px);z-index:50;display:none;align-items:center;justify-content:center;padding:20px}
+.mdl.on{display:flex;animation:pin .2s ease-out}
+.mbox{background:var(--card);color:var(--tx);border-radius:16px;width:min(980px,100%);max-height:88vh;display:flex;flex-direction:column;box-shadow:0 30px 60px -20px rgba(0,0,0,.5);border-top:5px solid var(--c);overflow:hidden}
+.mhd{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:16px 20px 10px}
+.mhd h3{margin:0;font-size:18px;color:var(--c)}
+.mhd .ms{color:var(--mut);font-size:12.8px;margin-top:4px}
+.mx{border:1px solid var(--line);background:var(--card2);color:var(--tx);border-radius:999px;width:32px;height:32px;cursor:pointer;font-size:15px;flex:none}
+.mbd{padding:0 20px 18px;overflow:auto}
+.mfl{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+.mfl .bx{text-align:center;min-width:130px}.mfl .bx span{display:block;font-size:12px;color:var(--mut)}.mfl .bx b{font-size:22px;font-variant-numeric:tabular-nums}
+.mfl .ar{font-size:22px;color:var(--mut)}
+.mtx{font-size:13.5px;line-height:1.8;margin:4px 0 10px}
+.mbd th,.mbd td{white-space:normal;padding:7px 7px}.mbd td.n{white-space:nowrap}.mbd .tbl-wrap{max-height:none}.mbd .bdg{white-space:nowrap}
+</style>
+</head><body>
+<div class="wrap">
+<header>
+ <div><h1>تقرير الشئون القانونية</h1>
+ <div class="sub">القضايا المتداولة حتى <b id="dtN"></b> • مصدر البيانات: <b id="srcN"></b> • اعداد التقرير: حازم حسن</div></div>
+ <div class="hsel"><label>📅 تاريخ التقرير:</label><select id="dSel"></select><span id="pLbl" style="font-size:12.5px;color:#E8D9A8"></span></div>
+</header>
+
+<div class="tabs" id="tabs">
+ <button class="tab on" data-p="lb" style="--c:var(--teal)"><span class="ic">👷</span>القضايا العمالية</button>
+ <button class="tab" data-p="cm" style="--c:var(--purple)"><span class="ic">🏢</span>القضايا التجارية</button>
+</div>
+
+<!-- ================= العمالية ================= -->
+<section class="page on" id="p-lb">
+ <div class="filters"><label>صفة الشركة:</label><span id="lR"></span></div>
+ <div class="kpis k5" id="lK"></div>
+ <div id="lN"></div>
+ <div class="grid"><div class="card">
+  <div class="tbar"><h2><i style="--c:var(--blue)"></i>بيان القضايا العمالية — <span id="lTT"></span></h2><input type="search" id="lQ" placeholder="ابحث بالاسم أو رقم القضية أو الموضوع..."></div>
+  <div class="tbl-wrap"><table id="lT"><thead></thead><tbody></tbody><tfoot></tfoot></table></div>
+ </div></div>
+ <div class="grid g2">
+  <div class="stk">
+   <div class="card"><h2><i style="--c:var(--teal)"></i>توزيع القضايا حسب الصفة</h2><div class="hint">العدد ومبلغ المطالبة • اضغط للفلترة</div><div class="hb" id="lRo"></div></div>
+   <div class="card"><h2><i style="--c:var(--orange)"></i>طلبات التسوية المتداولة</h2><div class="hint">طلبات التسوية الودية قبل المحكمة</div>
+    <div class="tbl-wrap"><table id="sT"><thead></thead><tbody></tbody></table></div></div>
+  </div>
+  <div class="card"><h2><i style="--c:var(--purple)"></i>المطالبات حسب موضوع القضية</h2><div class="hint">مبلغ المطالبة لكل موضوع • مرّر الماوس للتفاصيل</div><div class="hb" id="lTo"></div>
+   <div class="legend"><span style="--c:var(--red)">الشركة مدعى عليها</span><span style="--c:var(--green)">الشركة مدعية</span></div></div>
+ </div>
+ <div class="grid" id="lMvG"><div class="card"><h2><i style="--c:var(--gold)"></i>حركة القضايا العمالية</h2><div class="hint" id="lMvH"></div><div class="mvsum" id="lMvS"></div><div class="tbl-wrap"><table id="lMv"><thead></thead><tbody></tbody></table></div></div></div>
+</section>
+
+<!-- ================= التجارية ================= -->
+<section class="page" id="p-cm">
+ <div class="filters"><label>صفة الشركة:</label><span id="cR"></span></div>
+ <div class="kpis k5" id="cK"></div>
+ <div id="cN"></div>
+ <div class="grid"><div class="card">
+  <div class="tbar"><h2><i style="--c:var(--purple)"></i>بيان القضايا التجارية — <span id="cTT"></span></h2><input type="search" id="cQ" placeholder="ابحث بالرقم أو الخصم أو الموضوع أو المحكمة..."></div>
+  <div class="tbl-wrap"><table id="cT"><thead></thead><tbody></tbody><tfoot></tfoot></table></div>
+ </div></div>
+ <div class="grid g2">
+  <div class="stk">
+   <div class="card"><h2><i style="--c:var(--purple)"></i>توزيع القضايا حسب الصفة</h2><div class="hint">العدد ومبلغ المطالبة • اضغط للفلترة</div><div class="hb" id="cRo"></div></div>
+   <div class="card"><h2><i style="--c:var(--teal)"></i>طلبات التراضي</h2><div class="hint">المطالبات في مرحلة التراضي قبل المحكمة • الشركة مدعية أو مدعى عليها</div>
+    <div class="tbl-wrap"><table id="rT"><thead></thead><tbody></tbody><tfoot></tfoot></table></div></div>
+  </div>
+  <div class="card"><h2><i style="--c:var(--blue)"></i>المطالبات حسب الخصم</h2><div class="hint">مبلغ المطالبة لكل خصم • مرّر الماوس للتفاصيل</div><div class="hb cmp" id="cOp"></div>
+   <div class="legend"><span style="--c:var(--red)">الشركة مدعى عليها</span><span style="--c:var(--green)">الشركة مدعية</span></div></div>
+ </div>
+ <div class="grid" id="cMvG"><div class="card"><h2><i style="--c:var(--gold)"></i>حركة القضايا التجارية</h2><div class="hint" id="cMvH"></div><div class="mvsum" id="cMvS"></div><div class="tbl-wrap"><table id="cMv"><thead></thead><tbody></tbody></table></div></div></div>
+</section>
+<footer>اعداد التقرير: حازم حسن</footer>
+</div>
+<div class="tip" id="tip"></div>
+<div class="mdl" id="mdl"><div class="mbox" id="mbox"><div class="mhd"><div><h3 id="mT"></h3><div class="ms" id="mS"></div></div><button class="mx" id="mX">✕</button></div><div class="mbd" id="mB"></div></div></div>
+<script>
+const SN=[
+ {
+  "date": "23-10-2026",
+  "src": "الاستاذ عبدالله قايد",
+  "lab": [
+   {
+    "no": "4772461863",
+    "role": "مدعي",
+    "opp": "نايف بن عبدالعزيز بن علي",
+    "amt": 8000,
+    "topic": "مطالبة بالشرط الجزائي في العقد"
+   },
+   {
+    "no": "4772744653",
+    "role": "مدعى عليه",
+    "opp": "طلال حميد محمد غلام",
+    "amt": 68290,
+    "topic": "متأخرات + نهاية خدمة + اجازات"
+   },
+   {
+    "no": "4772938131",
+    "role": "مدعى عليه",
+    "opp": "محمد فوزي قاسم",
+    "amt": 276333,
+    "topic": "متأخرات + نهاية خدمة"
+   },
+   {
+    "no": "4772936596",
+    "role": "مدعى عليه",
+    "opp": "نايف بن عبدالعزيز بن علي",
+    "amt": 23616,
+    "topic": "متأخرات + نهاية خدمة + اجازات"
+   },
+   {
+    "no": "4773052044",
+    "role": "مدعى عليه",
+    "opp": "محمد فوزي قاسم",
+    "amt": 34000,
+    "topic": "تعويض(شرط جزائي)"
+   },
+   {
+    "no": "4870073784",
+    "role": "مدعى عليه",
+    "opp": "جهانزيب",
+    "amt": 30765,
+    "topic": "اجور متأخرة + اضافي"
+   },
+   {
+    "no": "4870189806",
+    "role": "مدعى عليه",
+    "opp": "فاطمة قاسم بوعريش",
+    "amt": 56179,
+    "topic": "متأخرات + نهاية خدمة + اجازات"
+   },
+   {
+    "no": "4870216127",
+    "role": "مدعى عليه",
+    "opp": "هاريس أحمد",
+    "amt": 23602,
+    "topic": "اجور متأخرة + اضافي"
+   },
+   {
+    "no": "485033538",
+    "role": "مدعي",
+    "opp": "ندى الفوزان",
+    "amt": 31627,
+    "topic": "رد غير مستحق"
+   },
+   {
+    "no": "4870370960",
+    "role": "مدعى عليه",
+    "opp": "بدر عبيد العتيبي",
+    "amt": 19910,
+    "topic": "اجور متأخرة + اضافي"
+   },
+   {
+    "no": "4870357728",
+    "role": "مدعى عليه",
+    "opp": "محمد سعد محمد",
+    "amt": 46072,
+    "topic": "اجور متأخرة + تعويض"
+   },
+   {
+    "no": "48704475579",
+    "role": "مدعى عليه",
+    "opp": "هاشم محمد أحمد",
+    "amt": 30450,
+    "topic": "اجور متأخرة + تعويض"
+   },
+   {
+    "no": "4870471566",
+    "role": "مدعى عليه",
+    "opp": "على الحبيب",
+    "amt": 21634,
+    "topic": "متأخرات + نهاية خدمة + اجازات"
+   },
+   {
+    "no": "4870505073",
+    "role": "مدعى عليه",
+    "opp": "علي ارتيز",
+    "amt": 11373,
+    "topic": "متأخرات + نهاية خدمة + اجازات"
+   }
+  ],
+  "com": [
+   {
+    "role": "مدعي",
+    "opp": "شركة الركن الهندسي",
+    "amt": 49239,
+    "amtTxt": "",
+    "topic": "مطالبة بتوريدات (اسفلت)"
+   },
+   {
+    "role": "مدعى عليه",
+    "opp": "سارة حامد علي الزيد",
+    "amt": 5707,
+    "amtTxt": "",
+    "topic": "حق خاص ناشئ عن حادث مروري"
+   },
+   {
+    "role": "مدعى عليه",
+    "opp": "مالك محمد أمين",
+    "amt": 6000,
+    "amtTxt": "",
+    "topic": "تسليم اجرة قدرها 6000 ريال"
+   },
+   {
+    "role": "مدعى عليه",
+    "opp": "تركي بن فهد",
+    "amt": 0,
+    "amtTxt": "رد الدعوى",
+    "topic": "طلب وقف التنفيذ سداد الوفاء بعد صدور السند التنفيذي"
+   },
+   {
+    "role": "مدعي",
+    "opp": "مؤسسة تنمية الاحساء",
+    "amt": 44050,
+    "amtTxt": "",
+    "topic": "توريد مبيعات كسارة (بحص)"
+   },
+   {
+    "role": "مدعي",
+    "opp": "شركة سمو التنفيذ",
+    "amt": 121634,
+    "amtTxt": "",
+    "topic": "ايجار كرين"
+   },
+   {
+    "role": "مدعي",
+    "opp": "شركة انماء البلاد",
+    "amt": 149524,
+    "amtTxt": "",
+    "topic": "توريد مبيعات أسفلت"
+   },
+   {
+    "role": "مدعي",
+    "opp": "شركة الأهداف الثابتة",
+    "amt": 40000,
+    "amtTxt": "",
+    "topic": "توريد خدمات"
+   },
+   {
+    "role": "مدعي",
+    "opp": "شركة ديم المحدودة",
+    "amt": 266324,
+    "amtTxt": "",
+    "topic": "مقاولة اعمال"
+   },
+   {
+    "role": "مدعي",
+    "opp": "مجالات الأفق",
+    "amt": 18000,
+    "amtTxt": "",
+    "topic": "سند لأمر ( الشيخ جابر)"
+   },
+   {
+    "role": "مدعي",
+    "opp": "شركة خدمات الطرق",
+    "amt": 65181,
+    "amtTxt": "",
+    "topic": "توريد اسفلت"
+   },
+   {
+    "role": "مدعى عليه",
+    "opp": "شركة ايوان للموارد البشرية",
+    "amt": 332697,
+    "amtTxt": "",
+    "topic": "توريد عمالة"
+   }
+  ],
+  "stl": [
+   {
+    "no": "14480417492",
+    "name": "مهدي احمد بن جاسم",
+    "role": "مدعى عليه",
+    "topic": "مستحقات عمالية",
+    "req": "إحالة للمحكمة"
+   },
+   {
+    "no": "14480514827",
+    "name": "يوسف خالد بن حسن المتكي",
+    "role": "مدعى عليه",
+    "topic": "مستحقات عمالية",
+    "req": "إحالة للمحكمة"
+   }
+  ],
+  "rad": [
+   {
+    "role": "مدعي",
+    "opp": "شركة ساينو",
+    "topic": "مطالبة",
+    "amt": 897302
+   },
+   {
+    "role": "مدعي",
+    "opp": "شركة خليج التطويرية",
+    "topic": "مطالبة",
+    "amt": 92000
+   }
+  ],
+  "notes": [
+   {
+    "kind": "lab",
+    "who": "محمد فوزي قاسم",
+    "txt": "تم عمل مذكرة صلح ب مبلغ 270 الف ريال الى 3 دفعات بين المدعي والشركة وفى انتظار تقديمها بالجلسة القادمة"
+   }
+  ]
+ },
+ {
+  "date": "23-11-2026",
+  "src": "الاستاذ / احمد عبد الستار",
+  "lab": [
+   {
+    "no": "4772461863",
+    "role": "مدعي",
+    "opp": "نايف بن عبدالعزيز بن علي",
+    "amt": 8000,
+    "topic": "مطالبة بالشرط الجزائي في العقد"
+   },
+   {
+    "no": "4772744653",
+    "role": "مدعى عليه",
+    "opp": "طلال حميد محمد غلام",
+    "amt": 68290,
+    "topic": "متأخرات + نهاية خدمة + اجازات"
+   },
+   {
+    "no": "4772936596",
+    "role": "مدعى عليه",
+    "opp": "نايف بن عبدالعزيز بن علي",
+    "amt": 23616,
+    "topic": "متأخرات + نهاية خدمة + اجازات"
+   },
+   {
+    "no": "4870216127",
+    "role": "مدعى عليه",
+    "opp": "هاريس أحمد",
+    "amt": 23602,
+    "topic": "اجور متأخرة + اضافي"
+   },
+   {
+    "no": "4870584288",
+    "role": "مدعي",
+    "opp": "ندى الفوزان",
+    "amt": 31627,
+    "topic": "رد غير مستحق"
+   },
+   {
+    "no": "4870370960",
+    "role": "مدعى عليه",
+    "opp": "بدر عبيد العتيبي",
+    "amt": 19910,
+    "topic": "اجور متأخرة + اضافي"
+   },
+   {
+    "no": "4870357728",
+    "role": "مدعى عليه",
+    "opp": "محمد سعد محمد",
+    "amt": 46072,
+    "topic": "اجور متأخرة + تعويض"
+   },
+   {
+    "no": "48704475579",
+    "role": "مدعى عليه",
+    "opp": "هاشم محمد أحمد",
+    "amt": 30450,
+    "topic": "اجور متأخرة + تعويض"
+   },
+   {
+    "no": "4870471566",
+    "role": "مدعى عليه",
+    "opp": "على الحبيب",
+    "amt": 21634,
+    "topic": "متأخرات + نهاية خدمة + اجازات"
+   },
+   {
+    "no": "4870505073",
+    "role": "مدعى عليه",
+    "opp": "علي ارتيز",
+    "amt": 11373,
+    "topic": "متأخرات + نهاية خدمة + اجازات"
+   },
+   {
+    "no": "4870801406",
+    "role": "مدعى عليه",
+    "opp": "نوره بنت عيسى البوسالم",
+    "amt": 5874,
+    "topic": "حسميات + السلفة"
+   },
+   {
+    "no": "4850888401",
+    "role": "مدعي",
+    "opp": "فاطمة بوعريش",
+    "amt": 16675,
+    "topic": "رد غير مستحق + السلفة"
+   }
+  ],
+  "com": [
+   {
+    "no": "4772786055",
+    "role": "مدعى عليه",
+    "opp": "سارة حامد علي الزيد",
+    "amt": 5707,
+    "amtTxt": "",
+    "topic": "حق خاص ناشئ عن حادث مروري",
+    "court": "المحكمة العامة بالرياض الدائرة المرورية 12",
+    "stage": "25/10/1447",
+    "done": ""
+   },
+   {
+    "no": "4870445193",
+    "role": "مدعى عليه",
+    "opp": "تركي بن فهد",
+    "amt": 0,
+    "amtTxt": "رد الدعوى",
+    "topic": "طلب وقف التنفيذ سداد الوفاء بعد صدور السند التنفيذي",
+    "court": "محكمة التنفيذ بالرياض(الاستئناف)",
+    "stage": "",
+    "done": "رد الدعوى"
+   },
+   {
+    "no": "4870478334",
+    "role": "مدعي",
+    "opp": "مؤسسة تنمية الاحساء",
+    "amt": 44050,
+    "amtTxt": "",
+    "topic": "توريد مبيعات كسارة (بحص)",
+    "court": "المحكمة التجارية بالدمام",
+    "stage": "",
+    "done": "لتوجيه اليمين الى الشركة المدعى عليها"
+   },
+   {
+    "no": "4870439352",
+    "role": "مدعي",
+    "opp": "شركة سمو التنفيذ",
+    "amt": 121634,
+    "amtTxt": "",
+    "topic": "ايجار كرين",
+    "court": "المحكمة التجارية بالدمام",
+    "stage": "",
+    "done": "تم ترجمة أمر الشراء ويقدم كمستند داعم"
+   },
+   {
+    "no": "4870478321",
+    "role": "مدعي",
+    "opp": "شركة انماء البلاد",
+    "amt": 149524,
+    "amtTxt": "",
+    "topic": "توريد مبيعات أسفلت",
+    "court": "المحكمة التجارية بالدمام",
+    "stage": "",
+    "done": "تم الحكم بالزام الشركة المدعي عليها بسداد مبلغ المطالبة"
+   },
+   {
+    "no": "4870511594",
+    "role": "مدعي",
+    "opp": "شركة الأهداف الثابتة",
+    "amt": 40000,
+    "amtTxt": "",
+    "topic": "توريد خدمات",
+    "court": "المحكمة التجارية بالدمام",
+    "stage": "",
+    "done": ""
+   },
+   {
+    "no": "401014804892473",
+    "role": "مدعي",
+    "opp": "مجالات الأفق",
+    "amt": 18000,
+    "amtTxt": "",
+    "topic": "سند لأمر",
+    "court": "التنفيذ (السند لأمر)",
+    "stage": "التنفيذ (تحت الاجراء)",
+    "done": ""
+   },
+   {
+    "no": "4870502771",
+    "role": "مدعي",
+    "opp": "شركة خدمات الطرق",
+    "amt": 65181,
+    "amtTxt": "",
+    "topic": "توريد اسفلت",
+    "court": "المحكمة التجارية بالرياض",
+    "stage": "",
+    "done": "تقديم كشف حساب تفصيلي من بداية التعامل حتى تاريخه"
+   },
+   {
+    "no": "4870700494",
+    "role": "مدعى عليه",
+    "opp": "شركة ايوان للموارد البشرية",
+    "amt": 332697,
+    "amtTxt": "",
+    "topic": "توريد عمالة",
+    "court": "المحكمة العامة بالرياض",
+    "stage": "",
+    "done": ""
+   },
+   {
+    "no": "4850841364",
+    "role": "مدعي",
+    "opp": "مؤسسة شاطئ التميز",
+    "amt": 16675,
+    "amtTxt": "",
+    "topic": "توريد",
+    "court": "المحكمة التجارية بالدمام",
+    "stage": "تحت التحديد",
+    "done": ""
+   },
+   {
+    "no": "",
+    "role": "مدعي",
+    "opp": "شركة خليج التطويرية",
+    "amt": 180000,
+    "amtTxt": "",
+    "topic": "مقاولات",
+    "court": "المحكمة التجارية",
+    "stage": "تحت التحديد",
+    "done": ""
+   }
+  ],
+  "stl": [],
+  "rad": [
+   {
+    "no": "1-4803090498",
+    "role": "مدعي",
+    "opp": "شركة صناع الأفكار",
+    "topic": "مطالبة",
+    "amt": 154944,
+    "note": "جاري تحديد الجلسة الثانية"
+   },
+   {
+    "no": "01-4804006085",
+    "role": "مدعي",
+    "opp": "شركة تمرس",
+    "topic": "مطالبة",
+    "amt": 55112,
+    "note": "تم التوقف"
+   },
+   {
+    "no": "01-4804037940",
+    "role": "مدعي",
+    "opp": "شركة ساينو",
+    "topic": "مطالبة",
+    "amt": 897302,
+    "note": "تحت التحديد في تراضي"
+   },
+   {
+    "no": "01-4805078816",
+    "role": "مدعى عليه",
+    "opp": "مؤسسة حفيظ سالم بن علي المري",
+    "topic": "مطالبة",
+    "amt": 312960,
+    "note": ""
+   }
+  ],
+  "notes": []
+ }
+];
+let D=SN[SN.length-1],P=SN[SN.length-2]||null,CUR="lb";
+const $=id=>document.getElementById(id);
+const CS=getComputedStyle(document.documentElement), C=k=>CS.getPropertyValue('--'+k).trim();
+const fmt=(n,d=0)=>(+n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const sar=n=>Math.abs(n)>=1e6?fmt(n/1e6,2)+' م':Math.abs(n)>=1e4?fmt(n/1e3,1)+' ألف':fmt(n,0);
+const pct=(v,d=1)=>v==null||!isFinite(v)?'—':(v*100).toFixed(d)+'%';
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const sum=(a,k)=>a.reduce((s,x)=>s+(typeof k==='function'?k(x):x[k]),0);
+const tip=$('tip');
+function showTip(e,h){tip.innerHTML=h;tip.style.display='block';const w=tip.offsetWidth,hh=tip.offsetHeight;let x=e.clientX+14,y=e.clientY+14;if(x+w>innerWidth-8)x=e.clientX-w-14;if(y+hh>innerHeight-8)y=e.clientY-hh-14;tip.style.left=x+'px';tip.style.top=y+'px'}
+function hideTip(){tip.style.display='none'}
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches, DUR=700, ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+/* ---------- أدوات مشتركة ---------- */
+function gauge(v,col){
+ const W=260,H=158,cx=W/2,cy=H-30,Rr=104,th=Rr*.27,r0=Rr-th;
+ const ang=f=>Math.PI*(1-Math.max(0,Math.min(1,f)));const P=(rad,a)=>[cx+rad*Math.cos(a),cy-rad*Math.sin(a)];
+ const band=(f0,f1)=>{const a0=ang(f0),a1=ang(f1),[x0,y0]=P(Rr,a0),[x1,y1]=P(Rr,a1),[x2,y2]=P(r0,a1),[x3,y3]=P(r0,a0);return `M${x0},${y0} A${Rr},${Rr} 0 0 1 ${x1},${y1} L${x2},${y2} A${r0},${r0} 0 0 0 ${x3},${y3} Z`};
+ let h=`<path d="${band(0,1)}" fill="${C('line2')}"/>`;if(v>0.001)h+=`<path d="${band(0,Math.min(1,v))}" fill="${col}"/>`;
+ h+=`<text x="${cx}" y="${cy-6}" text-anchor="middle" font-size="34" font-weight="800" fill="${col}">${pct(v)}</text><text x="${cx-Rr+th/2}" y="${cy+18}" text-anchor="middle" font-size="11" fill="${C('mut')}">0%</text><text x="${cx+Rr-th/2}" y="${cy+18}" text-anchor="middle" font-size="11" fill="${C('mut')}">100%</text>`;
+ return `<svg viewBox="0 0 ${W} ${H}">${h}</svg>`}
+function animGauge(host,v,col){if(host.__raf)cancelAnimationFrame(host.__raf);const fv=host.__v??0;host.__v=v;
+ if(REDUCED||fv===v){host.innerHTML=gauge(v,col);return}const t0=performance.now();
+ const step=now=>{const k=Math.min(1,(now-t0)/DUR);host.innerHTML=gauge(fv+(v-fv)*ease(k),col);host.__raf=k<1?requestAnimationFrame(step):0};host.__raf=requestAnimationFrame(step)}
+function kcards(host,K){$(host).innerHTML=K.map(([t,v,c,d,x])=>`<div class="kpi" style="--c:${c}"><div class="t">${t}</div><div class="v">${v}</div><div class="d">${d||''}</div>${x||''}</div>`).join('')}
+/* مؤشر الفرق: bad=1 الزيادة سلبية، bad=0 الزيادة إيجابية، bad=null محايد */
+function dl(c,p,bad){if(!P)return '';const d=c-p;if(!d)return `<div class="dl" style="--c:${C('grey')}">● لا تغيير عن ${P.date}</div>`;
+ const up=d>0,col=bad==null?C('blue'):(up==!!bad?C('red'):C('green'));
+ return `<div class="dl" style="--c:${col}">${up?'▲ +':'▼ −'}${fmt(Math.abs(d))}${p?` (${pct(Math.abs(d)/p,0)})`:''} عن ${P.date}</div>`}
+const NZ=s=>String(s||'').trim().replace(/\s+/g,' ').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي');
+/* مطابقة القضايا بين تاريخين */
+function mv(cur,prev,lab){const used=new Set(),out=[];
+ const fnd=x=>{let i=-1;if(lab)i=prev.findIndex((y,j)=>!used.has(j)&&y.no===x.no);
+  if(i<0)i=prev.findIndex((y,j)=>!used.has(j)&&NZ(y.opp)===NZ(x.opp)&&NZ(y.topic)===NZ(x.topic));
+  if(i<0)i=prev.findIndex((y,j)=>!used.has(j)&&NZ(y.opp)===NZ(x.opp)&&y.amt===x.amt);return i};
+ cur.forEach(x=>{const i=fnd(x);if(i<0){out.push({st:'n',x,pa:null,ca:x.amt});return}used.add(i);const y=prev[i];
+  const ch=[];if(y.amt!==x.amt)ch.push('المبلغ');if(lab&&y.no!==x.no)ch.push('رقم القضية ('+y.no+')');if(y.role!==x.role)ch.push('الصفة');
+  out.push({st:ch.length?'c':'s',x,y,pa:y.amt,ca:x.amt,ch})});
+ prev.forEach((y,j)=>{if(!used.has(j))out.push({st:'r',x:y,pa:y.amt,ca:null})});return out}
+const MS={n:['جديدة','blue'],r:['لم تعد متداولة','grey'],c:['تغيّرت بياناتها','gold'],s:['بدون تغيير','green']};
+function mvTable(pfx,M,lab){const G=$(pfx+'MvG');if(!P){G.style.display='none';return}G.style.display='';
+ const cnt=k=>M.filter(m=>m.st===k).length;
+ $(pfx+'MvH').innerHTML=`مقارنة <b>${D.date}</b> مع <b>${P.date}</b>`;
+ $(pfx+'MvS').innerHTML=['n','r','c','s'].map(k=>`<span class="bdg" style="--c:${C(MS[k][1])}">${MS[k][0]}: ${cnt(k)}</span>`).join('')+
+  `<span class="bdg" style="--c:${C('tx')}">صافي التغير في المطالبات: ${fmt(sum(M,m=>(m.ca||0)-(m.pa||0)))}${SR}</span>`;
+ const T=$(pfx+'Mv'),R=M.filter(m=>m.st!=='s').sort((a,b)=>'nrc'.indexOf(a.st)-'nrc'.indexOf(b.st));
+ T.tHead.innerHTML=`<tr><th>الحالة</th>${lab?'<th>رقم القضية</th>':''}<th>الخصم</th><th>صفة الشركة</th><th>الموضوع</th><th class="n">المبلغ في ${P.date}</th><th class="n">المبلغ في ${D.date}</th><th class="n">الفرق</th></tr>`;
+ T.tBodies[0].innerHTML=R.length?R.map(m=>{const d=(m.ca||0)-(m.pa||0);return `<tr><td><span class="bdg" style="--c:${C(MS[m.st][1])}">${MS[m.st][0]}</span>${m.ch&&m.ch.length?`<br><small style="color:var(--mut)">تغيّر: ${esc(m.ch.join('، '))}</small>`:''}</td>${lab?`<td class="n">${esc(m.x.no)}</td>`:''}<td><b>${esc(m.x.opp)}</b></td><td>${rb(m.x.role)}</td><td style="white-space:normal">${esc(m.x.topic)}</td><td class="n">${m.pa==null?'—':fmt(m.pa)}</td><td class="n">${m.ca==null?'—':fmt(m.ca)}</td><td class="n" style="color:${!d?C('mut'):(d>0)===(m.x.role===AG)?C('red'):C('green')};font-weight:700">${d?(d>0?'+':'−')+fmt(Math.abs(d)):'—'}</td></tr>`}).join(''):`<tr><td colspan="8" style="text-align:center;color:var(--mut)">لا توجد تغييرات بين التاريخين</td></tr>`}
+const isNew=(x,lab)=>P&&mv([x],lab?P.lab:P.com,lab)[0].st==='n';
+function gcards(host,G){const el=$(host);if(el.children.length!==G.length)el.innerHTML=G.map(()=>`<div class="gc"><span class="tag"></span><div class="gt"></div><div class="gs"></div><div class="ft"></div></div>`).join('');
+ G.forEach(([t,s,v,c,ft,tag],i)=>{const g=el.children[i];g.style.setProperty('--c',c);g.querySelector('.gt').innerHTML=`${t}<small>${s}</small>`;g.querySelector('.ft').innerHTML=ft;
+  g.querySelector('.tag').style.display='none';if(tag)g.querySelector('.ft').innerHTML=ft+` • <span style="color:${C('gold')}">${tag}</span>`;animGauge(g.querySelector('.gs'),v,c)})}
+/* rows: [{key,name,sub,parts:[[v,color,label]],val,valSub,sel,dim,tipH}] */
+function hbars(host,rows,max,onClick){const rowMax=max==='row';max=rowMax?1:(max||Math.max(1,...rows.map(r=>sum(r.parts,p=>p[0]))));
+ $(host).innerHTML=rows.map((r,i)=>`<div class="hr ${onClick?'ck':''} ${r.sel?'sel':''} ${r.dim?'dim':''}" data-i="${i}"><div class="nm">${esc(r.name)}${r.sub?`<small>${esc(r.sub)}</small>`:''}</div>
+  <div class="tr">${r.parts.map(([v,c])=>{const m=rowMax?Math.max(1,sum(r.parts,p=>p[0])):max;return v>0?`<div style="width:${(v/m*100).toFixed(2)}%;background:${c}"></div>`:''}).join('')}</div><div class="vv">${r.val}${r.valSub?`<small>• ${r.valSub}</small>`:''}</div></div>`).join('');
+ $(host).querySelectorAll('.hr').forEach(el=>{const r=rows[+el.dataset.i];if(onClick)el.onclick=()=>{hideTip();onClick(r)};if(r.tipH){el.onmousemove=e=>showTip(e,r.tipH);el.onmouseleave=hideTip}})}
+function sortable(tid,cols,rows,S,rowHtml,foot,rerender){
+ const k=S.k;rows.sort((a,b)=>{const va=a[k],vb=b[k];return(va>vb?1:va<vb?-1:0)*S.d});
+ $(tid).tHead.innerHTML='<tr>'+cols.map(([k2,l,n])=>`<th class="${n?'n':''}" data-k="${k2}">${l}${S.k===k2?(S.d>0?' ▲':' ▼'):''}</th>`).join('')+'</tr>';
+ $(tid).tBodies[0].innerHTML=rows.map(rowHtml).join('');$(tid).tFoot.innerHTML=foot;
+ $(tid).tHead.querySelectorAll('th').forEach(th=>th.onclick=()=>{const k2=th.dataset.k;if(S.k===k2)S.d=-S.d;else{S.k=k2;S.d=typeof rows[0]?.[k2]==='string'?1:-1}rerender()})}
+
+
+function hdr(){$('dtN').textContent=D.date;$('srcN').textContent=D.src;
+ $('dSel').innerHTML=SN.map((s,i)=>`<option value="${i}" ${s===D?'selected':''}>${s.date}</option>`).join('');
+ $('pLbl').innerHTML=P?`⇄ مقارنة تلقائية مع التقرير السابق: <b style="color:#fff">${P.date}</b>`:'⇄ لا يوجد تقرير سابق للمقارنة'}
+$('dSel').onchange=e=>{const i=+e.target.value;D=SN[i];P=SN[i-1]||null;go(CUR)};
+const AG='مدعى عليه',FO='مدعي';
+const RL={[AG]:'الشركة مدعى عليها',[FO]:'الشركة مدعية'}, RC=r=>r===AG?C('red'):C('green');
+const rb=r=>`<span class="bdg" style="--c:${RC(r)}">${RL[r]||esc(r)}</span>`;
+const SR=' ر.س';
+const tsum=(R,n)=>`<tr><td class="tsc" colspan="${n}"><div class="tsum"><span style="--c:${C('blue')}">الإجمالي <b>${R.length}</b> قضية • <b>${fmt(sum(R,'amt'))}</b>${SR}</span><span style="--c:${C('red')}">ضد الشركة <b>${fmt(sum(R.filter(x=>x.role===AG),'amt'))}</b>${SR}</span><span style="--c:${C('green')}">لصالح الشركة <b>${fmt(sum(R.filter(x=>x.role===FO),'amt'))}</b>${SR}</span></div></td></tr>`;
+function noteBox(ns){return ns.length?`<div class="lnote">${ns.map(n=>`<div><b>📌 بخصوص «${esc(n.who)}»:</b> ${esc(n.txt)}</div>`).join('')}</div>`:''}
+
+/* ================= صفحة مشتركة (عمالية / تجارية) ================= */
+const ST={lb:{r:null,q:'',s:{k:'amt',d:-1}},cm:{r:null,q:'',s:{k:'amt',d:-1}}};
+function chips(host,p,rr){const s=ST[p];$(host).innerHTML=[[null,'الكل',C('tx')],[AG,RL[AG],C('red')],[FO,RL[FO],C('green')]].map(([k,l,c])=>`<button class="chip ${s.r===k?'on':''}" style="--c:${c}" data-k="${k??''}"><i></i>${l}</button>`).join('');
+ $(host).querySelectorAll('.chip').forEach(b=>b.onclick=()=>{s.r=b.dataset.k||null;rr()})}
+function roleBars(host,A,p,rr){const s=ST[p],tot=sum(A,'amt');
+ hbars(host,[AG,FO].map(r=>{const g=A.filter(x=>x.role===r),a=sum(g,'amt');return{key:r,name:RL[r],sub:`${g.length} قضية • ${pct(A.length?g.length/A.length:0,0)} من العدد`,parts:[[a,RC(r)]],val:sar(a),valSub:pct(tot?a/tot:0,1),sel:s.r===r,dim:s.r&&s.r!==r,
+  tipH:`<b>${RL[r]}</b><br>عدد القضايا: ${g.length}<br>مبلغ المطالبة: ${fmt(a)}${SR}<br>${pct(tot?a/tot:0)} من الإجمالي`}}),null,r=>{s.r=s.r===r.key?null:r.key;rr()})}
+
+/* ================= العمالية ================= */
+function lRender(){const s=ST.lb,A=D.lab,R=A.filter(x=>!s.r||x.role===s.r),mx=R.slice().sort((a,b)=>b.amt-a.amt)[0],
+ PR=P?P.lab.filter(x=>!s.r||x.role===s.r):null,pmx=PR&&PR.length?Math.max(...PR.map(x=>x.amt)):0;
+ chips('lR','lb',lRender);
+ kcards('lK',[['عدد القضايا العمالية',fmt(R.length),C('blue'),`مدعى عليها: <b>${R.filter(x=>x.role===AG).length}</b> • مدعية: <b>${R.filter(x=>x.role===FO).length}</b>`,PR&&dl(R.length,PR.length,null)],
+  ['المطالبات ضد الشركة',fmt(sum(R.filter(x=>x.role===AG),'amt'))+`<small>${SR}</small>`,C('red'),`${R.filter(x=>x.role===AG).length} قضية • ${pct(sum(R,'amt')?sum(R.filter(x=>x.role===AG),'amt')/sum(R,'amt'):0)} من الإجمالي`,PR&&dl(sum(R.filter(x=>x.role===AG),'amt'),sum(PR.filter(x=>x.role===AG),'amt'),1)],
+  ['مطالبات الشركة على الغير',fmt(sum(R.filter(x=>x.role===FO),'amt'))+`<small>${SR}</small>`,C('green'),`${R.filter(x=>x.role===FO).length} قضية • ${pct(sum(R,'amt')?sum(R.filter(x=>x.role===FO),'amt')/sum(R,'amt'):0)} من الإجمالي`,PR&&dl(sum(R.filter(x=>x.role===FO),'amt'),sum(PR.filter(x=>x.role===FO),'amt'),0)],
+  ['أعلى مطالبة',mx?fmt(mx.amt)+`<small>${SR}</small>`:'—',C('orange'),mx?esc(mx.opp):'',PR&&dl(mx?mx.amt:0,pmx,null)],
+  ['طلبات التسوية المتداولة',fmt(D.stl.length),C('teal'),'مستحقات عمالية',P&&dl(D.stl.length,P.stl.length,null)]]);
+ mvTable('l',mv(D.lab,P?P.lab:[],1),1);
+ kclick('lK',['n','ag','fo','max','stl'],k=>kpiModal('lb',k));
+ $('lN').innerHTML=noteBox(D.notes.filter(n=>n.kind==='lab'));
+ roleBars('lRo',A,'lb',lRender);
+ $('sT').tHead.innerHTML='<tr><th>رقم الطلب</th><th>اسم المدعي</th><th>صفة الشركة</th><th>الموضوع</th><th>المطلوب</th></tr>';
+ $('sT').tBodies[0].innerHTML=D.stl.map(x=>`<tr><td class="n">${esc(x.no)}</td><td><b>${esc(x.name)}</b></td><td>${rb(x.role)}</td><td>${esc(x.topic)}</td><td><span class="bdg" style="--c:${C('orange')}">${esc(x.req)}</span></td></tr>`).join('')||`<tr><td colspan="5" style="text-align:center;color:var(--mut);padding:14px">لا توجد طلبات تسوية متداولة في ${D.date}</td></tr>`;
+ const T={};R.forEach(x=>{const k=x.topic;(T[k]=T[k]||{n:0,ag:0,fo:0,c:0});T[k].c++;T[k][x.role===AG?'ag':'fo']+=x.amt});const tot=sum(R,'amt');
+ hbars('lTo',Object.entries(T).sort((a,b)=>(b[1].ag+b[1].fo)-(a[1].ag+a[1].fo)).map(([k,v])=>({name:k,sub:`${v.c} قضية`,parts:[[v.ag,C('red')],[v.fo,C('green')]],val:sar(v.ag+v.fo),valSub:pct(tot?(v.ag+v.fo)/tot:0,1),
+  tipH:`<b>${esc(k)}</b><br>عدد القضايا: ${v.c}<br>المبلغ: ${fmt(v.ag+v.fo)}${SR}`})));
+ lTable()}
+function lTable(){const s=ST.lb,q=s.q.toLowerCase(),R=D.lab.filter(x=>(!s.r||x.role===s.r)&&(!q||(x.no+' '+x.opp+' '+x.topic).toLowerCase().includes(q))).map(x=>({...x}));
+ $('lTT').textContent=`${R.length} قضية`;const cnt={};D.lab.forEach(x=>cnt[x.opp]=(cnt[x.opp]||0)+1);
+ sortable('lT',[['no','رقم القضية'],['role','صفة الشركة'],['opp','الخصم'],['topic','الموضوع'],['amt','مبلغ المطالبة',1]],R,s.s,
+  x=>`<tr><td class="n">${esc(x.no)}</td><td>${rb(x.role)}</td><td><b>${esc(x.opp)}</b>${cnt[x.opp]>1?` <span class="bdg" style="--c:${C('gold')}">${cnt[x.opp]} قضايا</span>`:''}${D.notes.some(n=>n.who===x.opp)?' 📌':''}${isNew(x,1)?` <span class="bdg nw" style="--c:${C('blue')}">جديدة</span>`:''}</td><td>${esc(x.topic)}</td><td class="n"><b>${fmt(x.amt)}</b></td></tr>`,
+  tsum(R,5),lTable)}
+
+/* ================= التجارية ================= */
+function cRender(){const s=ST.cm,A=D.com,R=A.filter(x=>!s.r||x.role===s.r),tot=sum(R,'amt'),mx=R.slice().sort((a,b)=>b.amt-a.amt)[0],
+ PR=P?P.com.filter(x=>!s.r||x.role===s.r):null,pmx=PR&&PR.length?Math.max(...PR.map(x=>x.amt)):0,ptot=PR?sum(PR,'amt'):0;
+ chips('cR','cm',cRender);
+ kcards('cK',[['عدد القضايا التجارية',fmt(R.length),C('blue'),`مدعى عليها: <b>${R.filter(x=>x.role===AG).length}</b> • مدعية: <b>${R.filter(x=>x.role===FO).length}</b>`,PR&&dl(R.length,PR.length,null)],
+  ['المطالبات ضد الشركة',fmt(sum(R.filter(x=>x.role===AG),'amt'))+`<small>${SR}</small>`,C('red'),`${R.filter(x=>x.role===AG).length} قضية • ${pct(sum(R,'amt')?sum(R.filter(x=>x.role===AG),'amt')/sum(R,'amt'):0)} من الإجمالي`,PR&&dl(sum(R.filter(x=>x.role===AG),'amt'),sum(PR.filter(x=>x.role===AG),'amt'),1)],
+  ['مطالبات الشركة على الغير',fmt(sum(R.filter(x=>x.role===FO),'amt'))+`<small>${SR}</small>`,C('green'),`${R.filter(x=>x.role===FO).length} قضية • ${pct(sum(R,'amt')?sum(R.filter(x=>x.role===FO),'amt')/sum(R,'amt'):0)} من الإجمالي`,PR&&dl(sum(R.filter(x=>x.role===FO),'amt'),sum(PR.filter(x=>x.role===FO),'amt'),0)],
+  ['أعلى مطالبة',mx?fmt(mx.amt)+`<small>${SR}</small>`:'—',C('orange'),mx?`${esc(mx.opp)} • ${RL[mx.role]}`:'',PR&&dl(mx?mx.amt:0,pmx,null)],
+  ['تركّز أعلى مطالبة',pct(mx&&tot?mx.amt/tot:0),C('teal'),'من إجمالي المطالبات التجارية']]);
+ $('cN').innerHTML=noteBox(D.notes.filter(n=>n.kind==='com'));
+ mvTable('c',mv(D.com,P?P.com:[],0),0);
+ kclick('cK',['n','ag','fo','max','conc'],k=>kpiModal('cm',k));
+ roleBars('cRo',A,'cm',cRender);
+ $('rT').tHead.innerHTML='<tr><th>رقم الطلب</th><th>الخصم</th><th>صفة الشركة</th><th class="n">مبلغ المطالبة</th><th>ملاحظات</th></tr>';
+ $('rT').tBodies[0].innerHTML=D.rad.slice().sort((a,b)=>b.amt-a.amt).map(x=>`<tr><td class="n">${esc(x.no||'—')}</td><td><b>${esc(x.opp)}</b>${P&&!P.rad.some(y=>NZ(y.opp)===NZ(x.opp))?` <span class="bdg nw" style="--c:${C('blue')}">جديد</span>`:''}</td><td>${rb(x.role)}</td><td class="n"><b>${fmt(x.amt)}</b></td><td>${x.note?`<span class="bdg" style="--c:${C(/صلح/.test(x.note)?'green':/توقف/.test(x.note)?'grey':'orange')}">${esc(x.note)}</span>`:'—'}</td></tr>`).join('');
+ $('rT').tFoot.innerHTML=`<tr><td colspan="3">الإجمالي (${D.rad.length}) • لصالح الشركة ${fmt(sum(D.rad.filter(x=>x.role===FO),'amt'))} • ضدها ${fmt(sum(D.rad.filter(x=>x.role===AG),'amt'))}</td><td class="n">${fmt(sum(D.rad,'amt'))}</td><td></td></tr>`;
+ hbars('cOp',R.slice().sort((a,b)=>b.amt-a.amt).map(x=>({name:x.opp,sub:x.topic,parts:[[x.amt,RC(x.role)]],val:x.amt?sar(x.amt):esc(x.amtTxt||'—'),valSub:x.amt?pct(tot?x.amt/tot:0,1):'',
+  tipH:`<b>${esc(x.opp)}</b><br>${RL[x.role]}<br>الموضوع: ${esc(x.topic)}<br>المبلغ: ${x.amt?fmt(x.amt)+SR:esc(x.amtTxt||'—')}`})));
+ cTable()}
+function cTable(){const s=ST.cm,q=s.q.toLowerCase(),R=D.com.filter(x=>(!s.r||x.role===s.r)&&(!q||((x.no||'')+' '+x.opp+' '+x.topic+' '+(x.court||'')+' '+(x.done||'')).toLowerCase().includes(q))).map(x=>({no:'',court:'',done:'',...x}));
+ $('cTT').textContent=`${R.length} قضية`;
+ sortable('cT',[['no','رقم القضية'],['role','صفة الشركة'],['opp','الخصم'],['topic','الموضوع'],['court','المحكمة'],['done','ما تم'],['amt','مبلغ المطالبة',1]],R,s.s,
+  x=>`<tr><td class="n">${esc(x.no||'—')}</td><td>${rb(x.role)}</td><td><b>${esc(x.opp)}</b>${isNew(x,0)?` <span class="bdg nw" style="--c:${C('blue')}">جديدة</span>`:''}</td><td style="white-space:normal">${esc(x.topic)}</td><td style="white-space:normal;font-size:12px">${esc(x.court||'—')}${x.stage?`<br><small style="color:var(--mut)">${esc(x.stage)}</small>`:''}</td><td class="ntd">${x.done?`<span class="nt">${esc(x.done)}</span>`:'—'}</td><td class="n"><b>${x.amt?fmt(x.amt):`<span class="bdg" style="--c:${C('grey')}">${esc(x.amtTxt||'—')}</span>`}</b></td></tr>`,
+  tsum(R,7),cTable)}
+$('lQ').oninput=e=>{ST.lb.q=e.target.value.trim();lTable()};$('cQ').oninput=e=>{ST.cm.q=e.target.value.trim();cTable()};
+
+
+/* ================= نافذة تفاصيل الكروت ================= */
+const MD=$('mdl');const mClose=()=>MD.classList.remove('on');$('mX').onclick=mClose;MD.onclick=e=>{if(e.target===MD)mClose()};addEventListener('keydown',e=>{if(e.key==='Escape')mClose()});
+function mOpen(t,sub,col,body){$('mbox').style.setProperty('--c',col);$('mT').innerHTML=t;$('mS').innerHTML=sub;$('mB').innerHTML=body;MD.classList.add('on');$('mB').scrollTop=0}
+function kclick(host,keys,fn){[...$(host).children].forEach((el,i)=>{if(!keys[i])return;el.classList.add('clk');el.onclick=e=>{if(e.target.closest('.ii'))return;fn(keys[i])}})}
+const sgn=(d,bad)=>!d?`<span style="color:var(--mut)">—</span>`:`<b style="color:${bad==null?C('blue'):(d>0)==!!bad?C('red'):C('green')}">${d>0?'▲ +':'▼ −'}${fmt(Math.abs(d))}</b>`;
+function flow(p,c,bad,unit){return `<div class="mfl"><div class="bx"><span>${P?P.date:'—'}</span><b>${P?fmt(p)+unit:'—'}</b></div><div class="ar">←</div><div class="bx"><span>${D.date}</span><b>${fmt(c)+unit}</b></div><div class="ar">=</div><div class="bx"><span>الفرق</span>${P?sgn(c-p,bad):'—'}</div></div>`}
+function kpiModal(tab,k){
+ const lab=tab==='lb',s=ST[tab],cur=lab?D.lab:D.com,prev=P?(lab?P.lab:P.com):[],ok=r=>!s.r||r===s.r,typ=lab?'العمالية':'التجارية';
+ const fl=s.r?` • الفلتر: <b>${RL[s.r]}</b>`:'',col={n:C('blue'),ag:C('red'),fo:C('green'),max:C('orange'),stl:C('teal'),conc:C('teal')}[k];
+ const ttl={n:`عدد القضايا ${typ}`,ag:'المطالبات ضد الشركة',fo:'مطالبات الشركة على الغير',max:'أعلى مطالبة',stl:'طلبات التسوية المتداولة',conc:'تركّز أعلى مطالبة'}[k];
+ const sub=(P?`مقارنة <b>${D.date}</b> مع التقرير السابق <b>${P.date}</b>`:`تقرير <b>${D.date}</b> • لا يوجد تقرير سابق للمقارنة`)+fl;
+ if(k==='n'||k==='ag'||k==='fo'){
+  const val=(it)=>!it||!ok(it.role)?0:k==='n'?1:k==='ag'?(it.role===AG?it.amt:0):(it.role===FO?it.amt:0);
+  const M=mv(cur,prev,lab).map(m=>{const ci=m.st==='r'?null:m.x,pi=m.st==='n'?null:(m.st==='r'?m.x:m.y);return{...m,ci,pi,cv:val(ci),pv:val(pi)}});
+  const pt=sum(M,'pv'),ct=sum(M,'cv'),bad=k==='ag'?1:k==='fo'?0:null,unit=k==='n'?' قضية':SR;
+  const ch=P?M.filter(m=>m.cv!==m.pv):[],why=m=>m.st==='n'?'قضية جديدة':m.st==='r'?'لم تعد متداولة':m.ch.includes('الصفة')?'تغيّرت صفة الشركة':m.ch.includes('المبلغ')?'تغيّر المبلغ':'تغيّرت بياناتها';
+  let b=flow(pt,ct,bad,unit);
+  if(!P){b+=`<div class="mtx">الرقم الحالي يمثل <b>${fmt(ct)}</b> ${k==='n'?'قضية':'ر.س'} من القضايا ${typ}${s.r?' ('+RL[s.r]+')':''}.</div>`}
+  else if(!ch.length)b+=`<div class="mtx" style="text-align:center">✔ لا يوجد تغيير في هذا المؤشر عن ${P.date}.</div>`;
+  else{const add=ch.filter(m=>m.cv>m.pv),sub2=ch.filter(m=>m.cv<m.pv);
+   b+=`<div class="mtx">${k==='n'?`التغير ناتج عن <b>${add.length}</b> قضية دخلت و <b>${sub2.length}</b> قضية خرجت من المتداول`:`التغير ناتج عن <b>${ch.length}</b> قضية: زيادة <b>${fmt(sum(add,m=>m.cv-m.pv))}</b>${SR} ونقص <b>${fmt(sum(sub2,m=>m.pv-m.cv))}</b>${SR}`}، وهذه تفاصيلها:</div>`
+   +`<div class="tbl-wrap"><table><thead><tr><th>السبب</th>${lab?'<th>رقم القضية</th>':''}<th>الخصم</th><th>صفة الشركة</th><th>الموضوع</th><th class="n">المبلغ في ${P.date}</th><th class="n">المبلغ في ${D.date}</th><th class="n">الأثر على المؤشر</th></tr></thead><tbody>`
+   +ch.sort((a,b)=>Math.abs(b.cv-b.pv)-Math.abs(a.cv-a.pv)).map(m=>{const it=m.ci||m.pi;return `<tr><td><span class="bdg" style="--c:${C(MS[m.st][1])}">${why(m)}</span></td>${lab?`<td class="n">${esc(it.no)}</td>`:''}<td><b>${esc(it.opp)}</b></td><td>${m.pi&&m.ci&&m.pi.role!==m.ci.role?rb(m.pi.role)+' ← '+rb(m.ci.role):rb(it.role)}</td><td style="white-space:normal">${esc(it.topic)}</td><td class="n">${m.pi?fmt(m.pi.amt):'—'}</td><td class="n">${m.ci?fmt(m.ci.amt):'—'}</td><td class="n">${sgn(m.cv-m.pv,bad)}${k==='n'?'':''}</td></tr>`}).join('')
+   +`</tbody><tfoot><tr><td class="tsc" colspan="${lab?8:7}"><div class="tsum"><span style="--c:${col}">صافي التغير ${sgn(ct-pt,bad)} ${k==='n'?'قضية':SR}</span></div></td></tr></tfoot></table></div>`}
+  return mOpen(ttl,sub,col,b)}
+ if(k==='max'||k==='conc'){const R=cur.filter(x=>ok(x.role)),PR=prev.filter(x=>ok(x.role)),top=a=>a.slice().sort((x,y)=>y.amt-x.amt).slice(0,5),tot=sum(R,'amt'),mx=top(R)[0],pm=top(PR)[0];
+  const tb=(a,t,dt)=>`<div class="sh">${t} — ${dt}</div><div class="tbl-wrap"><table><thead><tr><th>#</th><th>الخصم</th><th>صفة الشركة</th><th>الموضوع</th><th class="n">المبلغ</th><th class="n">من الإجمالي</th></tr></thead><tbody>${a.map((x,i)=>`<tr><td class="n">${i+1}</td><td><b>${esc(x.opp)}</b></td><td>${rb(x.role)}</td><td style="white-space:normal">${esc(x.topic)}</td><td class="n"><b>${fmt(x.amt)}</b></td><td class="n">${pct(sum(a===top(R)?R:PR,'amt')?x.amt/sum(a===top(R)?R:PR,'amt'):0)}</td></tr>`).join('')}</tbody></table></div>`;
+  let b=k==='max'?flow(pm?pm.amt:0,mx?mx.amt:0,null,SR):`<div class="mfl"><div class="bx"><span>أعلى مطالبة</span><b>${fmt(mx?mx.amt:0)}</b></div><div class="ar">÷</div><div class="bx"><span>إجمالي المطالبات</span><b>${fmt(tot)}</b></div><div class="ar">=</div><div class="bx"><span>نسبة التركّز</span><b style="color:${col}">${pct(tot&&mx?mx.amt/tot:0)}</b></div></div>`;
+  if(mx)b+=`<div class="mtx">أعلى مطالبة حاليًا: <b>${esc(mx.opp)}</b> (${RL[mx.role]}) بمبلغ <b>${fmt(mx.amt)}</b>${SR}.${pm&&k==='max'?(NZ(pm.opp)===NZ(mx.opp)&&pm.amt===mx.amt?' وهي نفس أعلى مطالبة في التقرير السابق.':` في التقرير السابق كانت <b>${esc(pm.opp)}</b> بمبلغ <b>${fmt(pm.amt)}</b>${SR}${cur.some(x=>NZ(x.opp)===NZ(pm.opp)&&x.amt===pm.amt)?'':' ولم تعد متداولة'}.`):''}</div>`;
+  b+=tb(top(R),'أعلى 5 مطالبات',D.date);if(P&&k==='max')b+=tb(top(PR),'أعلى 5 مطالبات',P.date);
+  return mOpen(ttl,sub,col,b)}
+ if(k==='stl'){const ps=P?P.stl:[],cs=D.stl,key=x=>x.no;
+  const rows=[...cs.map(x=>({x,st:ps.some(y=>key(y)===key(x))?'s':'n'})),...ps.filter(y=>!cs.some(x=>key(x)===key(y))).map(x=>({x,st:'r'}))];
+  let b=flow(ps.length,cs.length,null,' طلب');
+  b+=rows.length?`<div class="tbl-wrap"><table><thead><tr><th>الحالة</th><th>رقم الطلب</th><th>اسم المدعي</th><th>صفة الشركة</th><th>الموضوع</th><th>المطلوب</th></tr></thead><tbody>${rows.map(({x,st})=>`<tr><td><span class="bdg" style="--c:${C(MS[st][1])}">${st==='n'?'جديد':st==='r'?'لم يعد متداولًا':'مستمر'}</span></td><td class="n">${esc(x.no)}</td><td><b>${esc(x.name)}</b></td><td>${rb(x.role)}</td><td>${esc(x.topic)}</td><td>${esc(x.req)}</td></tr>`).join('')}</tbody></table></div>`:`<div class="mtx" style="text-align:center">لا توجد طلبات تسوية.</div>`;
+  return mOpen(ttl,sub,col,b)}}
+/* ---------- التبويبات ---------- */
+const PAGES={lb:lRender,cm:cRender};
+function go(p){CUR=p;hdr();document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.p===p));document.querySelectorAll('.page').forEach(s=>s.classList.toggle('on',s.id==='p-'+p));PAGES[p]();try{history.replaceState(null,'','#'+p)}catch(e){}}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>go(t.dataset.p));
+go(PAGES[location.hash.slice(1)]?location.hash.slice(1):'lb');
+</script><!--UNIFY--><style>body{font-family:"Segoe UI",Tahoma,"Noto Sans Arabic",Arial,sans-serif!important}
+.kpi{border-radius:14px!important}
+.kpi .t,.kpi>.h{font-size:12.8px!important;font-weight:400!important}
+.kpi .v{font-weight:700!important}
+</style><script>(function(){const AR='؀-ۿ';const R1=new RegExp('(^|[^'+AR+'])مليون(?![؀-ۿ])','g'),R2=new RegExp('(^|[^'+AR+'])ريال(?![؀-ۿ])','g');
+const fix=n=>{const t=n.nodeValue;if(!t||(t.indexOf('مليون')<0&&t.indexOf('ريال')<0))return;const v=t.replace(R1,'$1م').replace(R2,'$1ر.س');if(v!==t)n.nodeValue=v};
+const SK={SCRIPT:1,STYLE:1,TEXTAREA:1,INPUT:1};
+const walk=r=>{if(r.nodeType===3){if(!SK[r.parentNode&&r.parentNode.nodeName])fix(r);return}if(r.nodeType!==1||SK[r.nodeName])return;const w=document.createTreeWalker(r,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode())if(!SK[n.parentNode.nodeName])fix(n)};
+const run=()=>walk(document.body);
+new MutationObserver(ms=>{for(const m of ms){if(m.type==='characterData')fix(m.target);else m.addedNodes.forEach(walk)}}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();})();</script><!--/UNIFY--><!--INFO-I--><style>.ii{display:inline-grid;place-items:center;width:15px;height:15px;border-radius:50%;border:1px solid currentColor;font:700 10px/1 Georgia,serif;font-style:italic;margin-inline-start:5px;cursor:pointer;opacity:.55;vertical-align:1px;transition:opacity .15s,transform .15s;user-select:none}
+.ii:hover{opacity:1;transform:scale(1.12)}
+.iipop{position:fixed;z-index:9999;width:300px;max-width:calc(100vw - 20px);background:#fff;color:#14213D;border:1px solid #E3E8F0;border-top:3px solid #B8860B;border-radius:12px;box-shadow:0 14px 34px rgba(0,0,0,.22);padding:12px 14px;font-size:12.8px;line-height:1.7;direction:rtl;text-align:right;font-family:inherit}
+.iipop h5{margin:0 0 6px;font-size:13.5px;color:#14213D}
+.iipop .r{margin-top:6px}.iipop .r b{display:block;font-size:11.5px;color:#B8860B}
+.iipop .r span{color:#4B5563}
+.iipop .x{position:absolute;top:6px;left:8px;cursor:pointer;color:#4B5563;font-size:14px}</style><script>(function(){const I={"إجمالي القضايا المتداولة": ["القضايا المنظورة حالياً أمام المحاكم.", "عدد القضايا العمالية + التجارية المتداولة.", "ملف الشؤون القانونية"], "المطالبات ضد الشركة": ["المبالغ التي يطالب بها الغير الشركة.", "مجموع مبالغ المطالبة في القضايا التي تكون فيها الشركة مدعى عليها.", "ملف الشؤون القانونية"], "مطالبات الشركة على الغير": ["المبالغ التي تطالب بها الشركة الغير.", "مجموع مبالغ المطالبة في القضايا التي تكون فيها الشركة مدعية.", "ملف الشؤون القانونية"], "مطالبات التراضي": ["مطالبات الشركة في مرحلة التراضي قبل المحكمة.", "مجموع مبالغ مطالبات التراضي.", "ملف الشؤون القانونية"], "طلبات التسوية المتداولة": ["طلبات تسوية ودية لم تُحَل إلى المحكمة بعد.", "عدد طلبات التسوية المتداولة.", "ملف الشؤون القانونية"], "عدد القضايا العمالية": ["القضايا العمالية المتداولة.", "عدد القضايا العمالية حسب الفلتر.", "ملف الشؤون القانونية"], "عدد القضايا التجارية": ["القضايا التجارية المتداولة.", "عدد القضايا التجارية حسب الفلتر.", "ملف الشؤون القانونية"], "إجمالي مبلغ المطالبة": ["مجموع المطالبات في القضايا المعروضة.", "مجموع مبالغ المطالبة، وتحته نصيب المطالبات ضد الشركة.", "ملف الشؤون القانونية"], "أعلى مطالبة": ["أكبر قضية من حيث المبلغ.", "أكبر مبلغ مطالبة بين القضايا المعروضة.", "ملف الشؤون القانونية"], "تركّز أعلى مطالبة": ["نسبة أكبر قضية من إجمالي المطالبات.", "أعلى مطالبة ÷ إجمالي المطالبات التجارية.", "ملف الشؤون القانونية"]};const ks=Object.keys(I);
+const rx=k=>new RegExp('^'+k.replace(/[.+?^${}()|[\]\\]/g,'\\$&').replace(/\*/g,'.*')+'$');const R=ks.map(k=>[rx(k),I[k]]);
+const find=t=>{t=t.replace(/\s+/g,' ').trim();for(const [r,v] of R)if(r.test(t))return v;return null};
+let pop=null;const close=()=>{if(pop){pop.remove();pop=null}};
+function open(el,title,v){close();pop=document.createElement('div');pop.className='iipop';
+ pop.innerHTML=`<span class="x">✕</span><h5>${title}</h5><div class="r"><b>التعريف</b><span>${v[0]}</span></div><div class="r"><b>طريقة الحساب</b><span>${v[1]}</span></div>${v[2]&&v[2]!=='—'?`<div class="r"><b>المصدر</b><span>${v[2]}</span></div>`:''}`;
+ document.body.appendChild(pop);const b=el.getBoundingClientRect(),w=pop.offsetWidth,h=pop.offsetHeight;
+ let x=b.left+b.width/2-w/2,y=b.bottom+8;x=Math.max(10,Math.min(x,innerWidth-w-10));if(y+h>innerHeight-10)y=Math.max(10,b.top-h-8);
+ pop.style.left=x+'px';pop.style.top=y+'px';pop.querySelector('.x').onclick=close}
+const own=e=>[...e.childNodes].filter(n=>n.nodeType===3||(n.nodeType===1&&!['SMALL','SPAN','B','svg'].includes(n.tagName)&&!n.classList.contains('ii'))).map(n=>n.textContent).join('').trim();
+function cands(){const o=[];document.querySelectorAll('.kpi').forEach(k=>{const t=k.querySelector('.t,.h');if(t)o.push([t,t.textContent.trim()])});
+ document.querySelectorAll('.gc .gt,.gcard .gt,.card.gauge>.t,.bt>.h,.tstats .h').forEach(e=>o.push([e,own(e)]));
+ document.querySelectorAll('.mini>div>span').forEach(e=>o.push([e,e.textContent.replace(/\s*•.*$/,'').trim()]));return o}
+function scan(){cands().forEach(([t,raw])=>{if(!t||t.querySelector('.ii'))return;
+ const title=raw.replace(/i$/,'').trim(),v=find(title);if(!v)return;const s=document.createElement('span');s.className='ii';s.textContent='i';s.title='طريقة الحساب';
+ s.addEventListener('click',e=>{e.stopPropagation();e.preventDefault();pop&&pop._for===s?close():(open(s,title,v),pop._for=s)});t.appendChild(s)})}
+document.addEventListener('click',e=>{if(pop&&!pop.contains(e.target))close()});document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+addEventListener('scroll',close,true);
+let q=0;new MutationObserver(()=>{if(!q){q=1;requestAnimationFrame(()=>{q=0;scan()})}}).observe(document.documentElement,{childList:true,subtree:true});
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scan);else scan();})();</script><!--/INFO-I--></body></html>
